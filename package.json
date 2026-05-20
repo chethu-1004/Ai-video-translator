@@ -23,6 +23,7 @@
   "author": "AI Video Translator Team",
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^8.2.0"
+    "concurrently": "^8.2.0",
+    "gh": "^2.8.9"
   }
 }
