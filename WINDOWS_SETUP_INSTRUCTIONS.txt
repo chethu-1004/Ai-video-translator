@@ -1,0 +1,359 @@
+================================================================================
+         AI VIDEO TRANSLATOR - WINDOWS SETUP & RUNNING INSTRUCTIONS
+================================================================================
+
+A full-stack web application that translates videos to Indian languages using
+Sarvam AI APIs for speech recognition, translation, and text-to-speech synthesis.
+
+================================================================================
+                           PREREQUISITES
+================================================================================
+
+Before starting, ensure you have the following software installed on Windows:
+
+1. NODE.JS (v18 or higher)
+   -----------------------
+   Download: https://nodejs.org/en/download
+   - Download the LTS (Long Term Support) version for Windows
+   - Run the installer and follow the prompts
+   - Verify installation by opening Command Prompt or PowerShell:
+     
+     node --version
+     npm --version
+
+2. PYTHON (v3.8 or higher)
+   ------------------------
+   Download: https://www.python.org/downloads/
+   - Download Python 3.8 or higher
+   - During installation, CHECK "Add Python to PATH"
+   - Verify installation:
+     
+     python --version
+     pip --version
+
+3. FFMPEG (Required for video processing)
+   --------------------------------------
+   Method 1 - Using Chocolatey (Recommended):
+   - Install Chocolatey first: https://chocolatey.org/install
+   - Open PowerShell as Administrator and run:
+     
+     choco install ffmpeg
+   
+   Method 2 - Manual Installation:
+   - Download from: https://ffmpeg.org/download.html (Windows builds from gyan.dev)
+   - Extract to C:\ffmpeg
+   - Add C:\ffmpeg\bin to your System PATH:
+     1. Search "Environment Variables" in Start Menu
+     2. Click "Edit the system environment variables"
+     3. Click "Environment Variables"
+     4. Under "System variables", find and edit "Path"
+     5. Add new entry: C:\ffmpeg\bin
+     6. Click OK on all dialogs
+     7. Restart Command Prompt/PowerShell
+   
+   Verify installation:
+   
+   ffmpeg -version
+
+4. SARVAM AI API KEY (Required)
+   ----------------------------
+   - Sign up at: https://dashboard.sarvam.ai/
+   - Navigate to "API Keys" section
+   - Click "Create New API Key"
+   - Copy the generated key immediately (you won't see it again)
+   - Keep this key safe - you'll need it later
+
+================================================================================
+                           INSTALLATION
+================================================================================
+
+STEP 1: EXTRACT THE PROJECT
+---------------------------
+1. Extract the ai-video-translator project folder to your desired location
+   Example: C:\Projects\ai-video-translator
+
+2. Open Command Prompt or PowerShell as Administrator
+
+3. Navigate to the project folder:
+   
+   cd C:\Projects\ai-video-translator
+
+STEP 2: INSTALL BACKEND DEPENDENCIES
+------------------------------------
+1. Navigate to backend folder:
+   
+   cd backend
+
+2. Install Node.js dependencies:
+   
+   npm install
+   
+   Wait for installation to complete (this may take a few minutes)
+
+STEP 3: INSTALL FRONTEND DEPENDENCIES
+-------------------------------------
+1. Navigate to frontend folder:
+   
+   cd ..\frontend
+
+2. Install Node.js dependencies:
+   
+   npm install
+   
+   Wait for installation to complete (this may take a few minutes)
+
+STEP 4: INSTALL PYTHON DEPENDENCIES
+-----------------------------------
+1. Navigate to the Python scripts folder:
+   
+   cd ..\backend\src\scripts
+
+2. Install Python packages:
+   
+   pip install -r requirements.txt
+   
+   This installs: requests, numpy, soundfile, pydub, ffmpeg-python
+
+STEP 5: CONFIGURE ENVIRONMENT VARIABLES
+---------------------------------------
+
+A. Backend Configuration:
+   1. Navigate back to backend folder:
+      
+      cd ..\..
+   
+   2. Copy the example environment file:
+      
+      copy .env.example .env
+   
+   3. Open the .env file in a text editor (Notepad, VS Code, etc.):
+      
+      notepad .env
+   
+   4. Update the following values:
+      
+      PORT=5000
+      JWT_SECRET=your_jwt_secret_key_here_change_in_production
+      MAX_FILE_SIZE=104857600
+      SARVAM_API_KEY=your_sarvam_api_key_here
+      SARVAM_API_URL=https://api.sarvam.ai
+      MAX_CONCURRENT_JOBS=2
+      CHUNK_DURATION_SECONDS=30
+      
+      Replace "your_sarvam_api_key_here" with your actual Sarvam AI API key
+   
+   5. Save and close the file
+
+B. Frontend Configuration:
+   1. Navigate to frontend folder:
+      
+      cd ..\frontend
+   
+   2. Create a .env file:
+      
+      notepad .env
+   
+   3. Add these lines to the file:
+      
+      VITE_API_URL=http://localhost:5000/api
+      VITE_SOCKET_URL=http://localhost:5000
+   
+   4. Save and close the file
+
+================================================================================
+                         RUNNING THE APPLICATION
+================================================================================
+
+You need to run BOTH the backend and frontend simultaneously.
+Use TWO separate Command Prompt/PowerShell windows.
+
+WINDOW 1: START THE BACKEND SERVER
+----------------------------------
+1. Open Command Prompt or PowerShell
+2. Navigate to the backend folder:
+   
+   cd C:\Projects\ai-video-translator\backend
+
+3. Start the development server:
+   
+   npm run dev
+   
+   You should see: "Server running on port 5000"
+   Keep this window open
+
+WINDOW 2: START THE FRONTEND SERVER
+-----------------------------------
+1. Open a NEW Command Prompt or PowerShell (leave the first one running)
+2. Navigate to the frontend folder:
+   
+   cd C:\Projects\ai-video-translator\frontend
+
+3. Start the development server:
+   
+   npm run dev
+   
+   You should see: "Local: http://localhost:5173/"
+   Keep this window open
+
+ACCESS THE APPLICATION
+----------------------
+1. Open your web browser (Chrome, Firefox, Edge, etc.)
+2. Navigate to: http://localhost:5173
+3. The AI Video Translator interface should load
+
+================================================================================
+                          USAGE INSTRUCTIONS
+================================================================================
+
+TRANSLATING A VIDEO
+-------------------
+1. On the homepage, click "Upload Video" or drag and drop a video file
+   - Supported formats: MP4, MKV, MOV, AVI, WEBM
+   - Maximum file size: 100MB (configurable in .env)
+
+2. Select the target language:
+   - Hindi (hi-IN)
+   - Kannada (kn-IN)
+   - Telugu (te-IN)
+   - Tamil (ta-IN)
+   - Malayalam (ml-IN)
+   - And 17 more Indian languages
+
+3. Configure options (optional):
+   - Generate subtitles: ON/OFF
+   - Subtitle position: Bottom/Top
+   - Audio sync adjustment: -500ms to +500ms
+   - Preserve background audio: ON/OFF
+
+4. Click "Start Translation"
+
+5. Wait for processing to complete. You'll see real-time progress updates.
+
+6. Download the translated video when ready.
+
+================================================================================
+                        TROUBLESHOOTING
+================================================================================
+
+ISSUE: "FFmpeg not found" error
+-------------------------------
+Solution: Ensure FFmpeg is installed and in your PATH
+1. Verify: ffmpeg -version
+2. If not found, reinstall FFmpeg and add to PATH
+3. Restart Command Prompt after adding to PATH
+
+ISSUE: "npm install" fails
+--------------------------
+Solution: 
+1. Clear npm cache: npm cache clean --force
+2. Delete node_modules folder: rmdir /s node_modules
+3. Delete package-lock.json: del package-lock.json
+4. Try again: npm install
+
+ISSUE: Python packages fail to install
+--------------------------------------
+Solution:
+1. Upgrade pip: python -m pip install --upgrade pip
+2. Try installing packages individually:
+   pip install requests numpy soundfile pydub ffmpeg-python
+
+ISSUE: "SARVAM_API_KEY is required"
+-----------------------------------
+Solution:
+1. Check your backend .env file exists in C:\Projects\ai-video-translator\backend\
+2. Ensure SARVAM_API_KEY is set correctly (no quotes, no extra spaces)
+3. Get a new API key from https://dashboard.sarvam.ai/ if needed
+4. Restart the backend server after updating .env
+
+ISSUE: "Cannot connect to server"
+---------------------------------
+Solution:
+1. Verify backend is running on port 5000
+2. Check Windows Firewall isn't blocking the port
+3. Ensure VITE_SOCKET_URL in frontend .env matches backend port
+
+ISSUE: Port already in use
+--------------------------
+Solution:
+1. Find and kill the process using the port, OR
+2. Change the PORT in backend .env to a different number (e.g., 5001)
+3. Update frontend .env VITE_API_URL and VITE_SOCKET_URL accordingly
+
+ISSUE: File upload fails
+------------------------
+Solution:
+1. Check file size is under MAX_FILE_SIZE (default: 100MB)
+2. Ensure file format is supported (MP4, MKV, MOV, AVI, WEBM)
+3. Check uploads folder exists: C:\Projects\ai-video-translator\backend\uploads
+
+================================================================================
+                      PRODUCTION DEPLOYMENT
+================================================================================
+
+BUILD FRONTEND FOR PRODUCTION
+-----------------------------
+1. Navigate to frontend folder:
+   cd C:\Projects\ai-video-translator\frontend
+
+2. Build the production files:
+   npm run build
+
+3. This creates a dist/ folder with optimized files
+
+RUN BACKEND IN PRODUCTION MODE
+------------------------------
+1. Set NODE_ENV=production in backend .env
+2. Navigate to backend folder:
+   cd C:\Projects\ai-video-translator\backend
+
+3. Start the production server:
+   npm start
+
+================================================================================
+                         PROJECT STRUCTURE
+================================================================================
+
+ai-video-translator/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/      # API controllers
+│   │   ├── middleware/       # Express middleware
+│   │   ├── routes/          # API routes
+│   │   ├── scripts/         # Python processing scripts
+│   │   │   └── requirements.txt
+│   │   ├── utils/           # Utility functions
+│   │   └── server.js        # Express server entry
+│   ├── uploads/             # Uploaded videos (auto-created)
+│   ├── outputs/             # Translated videos (auto-created)
+│   ├── .env                 # Environment variables (you create this)
+│   ├── .env.example         # Example environment file
+│   └── package.json
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── context/         # React contexts
+│   │   ├── pages/           # Page components
+│   │   ├── utils/           # Utility functions
+│   │   └── App.jsx
+│   ├── public/
+│   ├── .env                 # Frontend environment (you create this)
+│   └── package.json
+│
+├── README.md                # General documentation
+├── SARVAM_SETUP.md          # Sarvam AI setup details
+└── WINDOWS_SETUP_INSTRUCTIONS.txt  # This file
+
+================================================================================
+                        SUPPORT & RESOURCES
+================================================================================
+
+- Sarvam AI Dashboard: https://dashboard.sarvam.ai/
+- Sarvam AI Docs: https://docs.sarvam.ai/
+- FFmpeg Documentation: https://ffmpeg.org/documentation.html
+- Node.js Docs: https://nodejs.org/en/docs/
+- React Docs: https://react.dev/
+
+================================================================================
+                              END
+================================================================================

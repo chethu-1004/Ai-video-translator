@@ -1,0 +1,12 @@
+# Python dependencies for Sarvam AI video processing
+
+# API and HTTP requests
+requests>=2.31.0
+
+# Audio processing
+numpy>=1.24.0
+soundfile>=0.12.1
+pydub>=0.25.1
+
+# Video/Audio processing via FFmpeg
+ffmpeg-python>=0.2.0
